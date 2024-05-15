@@ -1,7 +1,9 @@
+import Header from "./_components/header";
+
 const Home = () => {
   return (
     <div>
-      <h1 className="flex bg-red-500">hello tailwind!</h1>
+      <Header />
     </div>
   );
 };
