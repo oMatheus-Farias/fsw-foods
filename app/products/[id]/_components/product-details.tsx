@@ -20,6 +20,16 @@ import {
   SheetTitle,
 } from "@/app/_components/ui/sheet";
 import Cart from "@/app/_components/cart";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/app/_components/ui/alert-dialog";
+import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 
 interface ProductDetailsProps {
   product: Prisma.ProductGetPayload<{
@@ -46,6 +56,8 @@ const ProductDetails = ({
   const [quantity, setQuantity] = useState(1);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { addProductToCart, products } = useContext(CartContext);
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] =
+    useState(false);
 
   const handleIncreaseQuantityClick = () => setQuantity((prev) => prev + 1);
 
@@ -54,9 +66,23 @@ const ProductDetails = ({
     setQuantity((prev) => prev - 1);
   };
 
-  const handleAddToCartClick = () => {
-    addProductToCart(product, quantity);
+  const addToCart = ({ emptyCart }: { emptyCart?: boolean }) => {
+    addProductToCart({ product, quantity, emptyCart });
     setIsCartOpen(true);
+  };
+
+  const handleAddToCartClick = () => {
+    const hasDifferentRestaurantProduct = products.some(
+      (cartProduct) => cartProduct.restaurantId !== product.restaurantId,
+    );
+
+    if (hasDifferentRestaurantProduct) {
+      return setIsConfirmationDialogOpen(true);
+    }
+
+    addToCart({
+      emptyCart: false,
+    });
   };
 
   return (
@@ -146,7 +172,7 @@ const ProductDetails = ({
           <SheetHeader>
             <SheetTitle className="text-left">Sacola</SheetTitle>
           </SheetHeader>
-          <div className="py-5">
+          <div className="h-full py-5">
             {products.length > 0 ? (
               <Cart />
             ) : (
@@ -157,6 +183,27 @@ const ProductDetails = ({
           </div>
         </SheetContent>
       </Sheet>
+
+      <AlertDialog
+        open={isConfirmationDialogOpen}
+        onOpenChange={setIsConfirmationDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Você tem produtos de outro restaurante na sacola. Deseja limpar a
+              sacola e adicionar este produto?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={() => addToCart({ emptyCart: true })}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
