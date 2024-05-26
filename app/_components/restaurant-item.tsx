@@ -54,7 +54,7 @@ const RestaurantItem = ({ restaurant, className }: RestaurantItemProps) => {
           <div className="flex items-center gap-1">
             <TimerIcon className="text-primary" size={14} />
             <span className="text-xs text-muted-foreground">
-              {restaurant.deliveryTimeMinutes} min
+              {restaurant.deliveryTimeMinutesMinutes} min
             </span>
           </div>
         </div>
