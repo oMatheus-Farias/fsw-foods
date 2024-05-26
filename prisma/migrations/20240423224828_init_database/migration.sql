@@ -4,7 +4,7 @@ CREATE TABLE "Restaurant" (
     "name" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
     "deliveryFree" DECIMAL(10,2) NOT NULL,
-    "deliveryTimeMinutes" INTEGER NOT NULL,
+    "deliveryTimeMinutesMinutes" INTEGER NOT NULL,
 
     CONSTRAINT "Restaurant_pkey" PRIMARY KEY ("id")
 );
