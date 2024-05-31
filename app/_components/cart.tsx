@@ -26,7 +26,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 interface CartProps {
-  setIsOpen: (isOpen: boolean) => void;
+  setIsOpen?: (isOpen: boolean) => void;
 }
 
 const Cart = ({ setIsOpen }: CartProps) => {
@@ -74,7 +74,7 @@ const Cart = ({ setIsOpen }: CartProps) => {
       });
 
       clearCart();
-      setIsOpen(false);
+      if (setIsOpen) setIsOpen(false);
 
       toast("Pedido finalizado com sucesso!", {
         description: "Acompanhe o status na aba de pedidos.",
