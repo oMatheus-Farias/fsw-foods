@@ -127,9 +127,12 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   className="flex w-full items-center justify-start gap-3 rounded-full text-sm font-normal"
+                  asChild
                 >
-                  <HeartIcon size={16} />
-                  <span className="block">Restaurantes Favoritos</span>
+                  <Link href="my-favorites-restaurants">
+                    <HeartIcon size={16} />
+                    <span className="block">Restaurantes Favoritos</span>
+                  </Link>
                 </Button>
               </>
             )}
