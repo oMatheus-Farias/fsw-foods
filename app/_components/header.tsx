@@ -116,9 +116,12 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   className="flex w-full items-center justify-start gap-3 rounded-full text-sm font-normal"
+                  asChild
                 >
-                  <ScrollTextIcon size={16} />
-                  <span className="block">Meus Pedidos</span>
+                  <Link href="/my-orders">
+                    <ScrollTextIcon size={16} />
+                    <span className="block">Meus Pedidos</span>
+                  </Link>
                 </Button>
 
                 <Button

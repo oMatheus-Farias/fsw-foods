@@ -55,6 +55,14 @@ const Cart = () => {
             id: data?.user?.id,
           },
         },
+        products: {
+          createMany: {
+            data: products.map((product) => ({
+              productId: product.id,
+              quantity: product.quantity,
+            })),
+          },
+        },
       });
 
       clearCart();
@@ -137,7 +145,7 @@ const Cart = () => {
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleFinishOrderClick}
-              className="h-10 rounded-md bg-red-500 text-white"
+              className="h-10 rounded-md bg-primary text-white"
             >
               Finalizar
             </AlertDialogAction>
