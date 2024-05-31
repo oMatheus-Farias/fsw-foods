@@ -174,7 +174,7 @@ const ProductDetails = ({
           </SheetHeader>
           <div className="h-full py-5">
             {products.length > 0 ? (
-              <Cart />
+              <Cart setIsOpen={setIsCartOpen} />
             ) : (
               <p className="text-center text-muted-foreground">
                 Sua sacola está vazia
