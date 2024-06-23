@@ -1,15 +1,23 @@
 "use client";
 
-import { Restaurant } from "@prisma/client";
+import { Restaurant, UserFavoriteRestaurant } from "@prisma/client";
 import { notFound, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { searchForRestaurants } from "../_actions/search";
 import Header from "@/app/_components/header";
 import RestaurantItem from "@/app/_components/restaurant-item";
+import { useSession } from "next-auth/react";
+import { getUserFavoriteRestaurants } from "@/app/_actions/user-favorite-restaurants";
 
 const Restaurants = () => {
   const searchParms = useSearchParams();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+
+  const session = useSession();
+  const userId = session.data?.user.id;
+  const [userFavoriteRestaurants, setUserFavoriteRestaurants] = useState<
+    UserFavoriteRestaurant[]
+  >([]);
 
   const searchFor = searchParms.get("search");
 
@@ -25,6 +33,20 @@ const Restaurants = () => {
     fetchRestaurants();
   }, [searchFor]);
 
+  useEffect(() => {
+    const fetchUserFavoriteRestaurants = async () => {
+      if (!userId) return;
+      try {
+        const response = await getUserFavoriteRestaurants(userId);
+        setUserFavoriteRestaurants(response);
+      } catch (error) {
+        console.error("Error fetching user favorites restaurants", error);
+      }
+    };
+
+    fetchUserFavoriteRestaurants();
+  }, [userId]);
+
   if (!searchFor) return notFound();
 
   return (
@@ -36,9 +58,10 @@ const Restaurants = () => {
         <div className="flex w-full flex-col gap-6">
           {restaurants.map((restaurant) => (
             <RestaurantItem
+              className="min-w-full max-w-full"
               key={restaurant.id}
               restaurant={restaurant}
-              className="min-w-full max-w-full"
+              userFavoriteRestaurants={userFavoriteRestaurants}
             />
           ))}
         </div>
